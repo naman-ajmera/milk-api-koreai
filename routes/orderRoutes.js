@@ -43,7 +43,7 @@ const orderRoute = express.Router();
  *           default: false
  *           description: boolean field to flag if order is delivered
  *         deliveredAt:
- *           type: time
+ *           type: date
  *           description: boolean field to flag if order is delivered
  */
 
