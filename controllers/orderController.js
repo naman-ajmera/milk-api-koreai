@@ -79,10 +79,11 @@ const deleteOrder = asyncHandler(async (req, res) => {
   );
 
   if (order) {
-    milkCapacity.milkCapacityDay = milkCapacity.milkCapacityDay + order.milkQuantity;
+    milkCapacity.milkCapacityDay =
+      milkCapacity.milkCapacityDay + order.milkQuantity;
     await milkCapacity.save();
     await order.deleteOne();
-    res.status(200).json({"message": "The order was deleted"});
+    res.status(200).json({ message: "The order was deleted" });
   } else {
     res.status(404);
     throw new Error("Order not found");
@@ -122,7 +123,7 @@ const checkCapacity = asyncHandler(async (req, res) => {
 });
 
 const getAllOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({})
+  const orders = await Order.find({});
 
   if (orders) {
     res.status(200).json(orders);
@@ -132,4 +133,11 @@ const getAllOrders = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrder, updateOrder, deleteOrder, updateOrderStatus, checkCapacity, getAllOrders };
+export {
+  addOrder,
+  updateOrder,
+  deleteOrder,
+  updateOrderStatus,
+  checkCapacity,
+  getAllOrders,
+};

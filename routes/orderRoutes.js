@@ -223,6 +223,6 @@ orderRoute.route("/checkCapacity/:date").get(checkCapacity);
  *       404:
  *         description: No Orders found!!!
  */
- orderRoute.route("/orders").get(getAllOrders);
+orderRoute.route("/orders").get(getAllOrders);
 
 export default orderRoute;
