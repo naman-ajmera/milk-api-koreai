@@ -5,6 +5,7 @@ import {
   deleteOrder,
   updateOrderStatus,
   checkCapacity,
+  getAllOrders,
 } from "../controllers/orderController.js";
 
 const orderRoute = express.Router();
@@ -49,7 +50,7 @@ const orderRoute = express.Router();
 /**
  * @swagger
  *  tags:
- *    name: Orders
+ *    name: Order
  *    description: orders for milk
  */
 
@@ -93,7 +94,7 @@ orderRoute.route("/").post(addOrder);
  *       - in: path
  *         name: id
  *         schema:
- *           type: integer
+ *           type: string
  *         required: true
  *         description: order id
  *     requestBody:
@@ -132,7 +133,7 @@ orderRoute.route("/:id").put(updateOrder);
  *          description: order id
  *          required: true
  *          schema:
- *            type: integer
+ *            type: string
  *      responses:
  *        200:
  *          description: The order was deleted
@@ -203,5 +204,25 @@ orderRoute.route("/updateStatus/:id").put(updateOrderStatus);
  *         description: No Orders placed for the given day.!!!
  */
 orderRoute.route("/checkCapacity/:date").get(checkCapacity);
+
+/**
+ * @swagger
+ * /orders:
+ *   get:
+ *     summary: Returns list of all orders
+ *     tags: [Order]
+ *     responses:
+ *       200:
+ *         description: list of all orders
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Order'
+ *       404:
+ *         description: No Orders found!!!
+ */
+ orderRoute.route("/orders").get(getAllOrders);
 
 export default orderRoute;

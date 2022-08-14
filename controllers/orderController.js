@@ -55,7 +55,7 @@ const updateOrder = asyncHandler(async (req, res) => {
     }
 
     milkCapacity.milkCapacityDay = Math.abs(
-      milkCapacity.milkCapacityDay - milkQuantity
+      milkCapacity.milkCapacityDay + order.milkQuantity - milkQuantity
     );
 
     const updatedMilkCapacity = await milkCapacity.save();
@@ -73,15 +73,16 @@ const updateOrder = asyncHandler(async (req, res) => {
 
 const deleteOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
+  console.log(moment(order.createdAt).format("MMDDYYYY"));
   const milkCapacity = await MilkCapacity.findById(
     moment(order.createdAt).format("MMDDYYYY")
   );
 
   if (order) {
-    milkCapacity.milkCapacityDay = milkCapacity.milkCapacityDay - milkQuantity;
+    milkCapacity.milkCapacityDay = milkCapacity.milkCapacityDay + order.milkQuantity;
     await milkCapacity.save();
-
-    res.status(200);
+    await order.deleteOne();
+    res.status(200).json({"message": "The order was deleted"});
   } else {
     res.status(404);
     throw new Error("Order not found");
@@ -120,4 +121,15 @@ const checkCapacity = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrder, updateOrder, deleteOrder, updateOrderStatus, checkCapacity };
+const getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({})
+
+  if (orders) {
+    res.status(200).json(orders);
+  } else {
+    res.status(404);
+    throw new Error("No Orders placed for the given day.!!");
+  }
+});
+
+export { addOrder, updateOrder, deleteOrder, updateOrderStatus, checkCapacity, getAllOrders };
